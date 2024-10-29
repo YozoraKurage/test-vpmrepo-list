@@ -6,13 +6,13 @@ on:
     branches: main
     paths: source.json
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# GITHUB_TOKENの権限を設定してGitHub Pagesへのデプロイを許可
 permissions:
   contents: read
   pages: write
   id-token: write
   
-# Allow one concurrent deployment
+# 1つの同時デプロイを許可
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -31,14 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - uses: actions/checkout@v3 # check out this repo
-      - uses: actions/checkout@v3 # check out automation repo
+      - uses: actions/checkout@v3 # このリポジトリをチェックアウト
+      - uses: actions/checkout@v3 # 自動化リポジトリをチェックアウト
         with:
           repository: vrchat-community/package-list-action
           path: ${{env.pathToCi}}
-          clean: false # otherwise the local repo will no longer be checked out
+          clean: false # そうしないとローカルリポジトリがチェックアウトされなくなる
           
-      - name: Restore Cache
+      - name: キャッシュの復元
         uses: actions/cache@v3
         with:
           path: |
@@ -46,19 +46,19 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
           
-      - name: Build Package Version Listing
+      - name: パッケージバージョンリストのビルド
         run: ${{env.pathToCi}}/build.cmd BuildMultiPackageListing --root ${{env.pathToCi}} --list-publish-directory $GITHUB_WORKSPACE/${{env.listPublishDirectory}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  
-      - name: Setup Pages
+      - name: Pagesのセットアップ
         uses: actions/configure-pages@v3
         
-      - name: Upload artifact
+      - name: アーティファクトのアップロード
         uses: actions/upload-pages-artifact@v1
         with:
           path: ${{env.listPublishDirectory}}
           
-      - name: Deploy to GitHub Pages
+      - name: GitHub Pagesへのデプロイ
         id: deployment
         uses: actions/deploy-pages@v2

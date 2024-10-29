@@ -1,7 +1,9 @@
 import { baseLayerLuminance, StandardLuminance } from 'https://unpkg.com/@fluentui/web-components';
 
+// パッケージリストのURLを定義
 const LISTING_URL = "{{ listingInfo.Url }}";
 
+// パッケージ情報を定義
 const PACKAGES = {
 {{~ for package in packages ~}}
   "{{ package.Name }}": {
@@ -29,6 +31,7 @@ const PACKAGES = {
 {{~ end ~}}
 };
 
+// テーマを設定する関数
 const setTheme = () => {
   const isDarkTheme = () => window.matchMedia("(prefers-color-scheme: dark)").matches;
   if (isDarkTheme()) {
@@ -38,15 +41,18 @@ const setTheme = () => {
   }
 }
 
+// 即時関数で初期化処理を実行
 (() => {
   setTheme();
 
+  // ダークテーマの変更を監視
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     setTheme();
   });
 
   const packageGrid = document.getElementById('packageGrid');
 
+  // 検索入力のイベントリスナーを設定
   const searchInput = document.getElementById('searchInput');
   searchInput.addEventListener('input', ({ target: { value = '' }}) => {
     const items = packageGrid.querySelectorAll('fluent-data-grid-row[row-type="default"]');
@@ -66,6 +72,7 @@ const setTheme = () => {
     });
   });
 
+  // URLバーのヘルプボタンのイベントリスナーを設定
   const urlBarHelpButton = document.getElementById('urlBarHelp');
   const addListingToVccHelp = document.getElementById('addListingToVccHelp');
   urlBarHelpButton.addEventListener('click', () => {
@@ -76,6 +83,7 @@ const setTheme = () => {
     addListingToVccHelp.hidden = true;
   });
 
+  // URLフィールドのコピー機能を設定
   const vccListingInfoUrlFieldCopy = document.getElementById('vccListingInfoUrlFieldCopy');
   vccListingInfoUrlFieldCopy.addEventListener('click', () => {
     const vccUrlField = document.getElementById('vccListingInfoUrlField');
@@ -87,9 +95,11 @@ const setTheme = () => {
     }, 1000);
   });
 
+  // VCCリポジトリ追加ボタンのイベントリスナーを設定
   const vccAddRepoButton = document.getElementById('vccAddRepoButton');
   vccAddRepoButton.addEventListener('click', () => window.location.assign(`vcc://vpm/addRepo?url=${encodeURIComponent(LISTING_URL)}`));
 
+  // URLフィールドのコピー機能を設定
   const vccUrlFieldCopy = document.getElementById('vccUrlFieldCopy');
   vccUrlFieldCopy.addEventListener('click', () => {
     const vccUrlField = document.getElementById('vccUrlField');
@@ -101,6 +111,7 @@ const setTheme = () => {
     }, 1000);
   });
 
+  // 行のメニューを隠す関数を設定
   const rowMoreMenu = document.getElementById('rowMoreMenu');
   const hideRowMoreMenu = e => {
     if (rowMoreMenu.contains(e.target)) return;
@@ -108,6 +119,7 @@ const setTheme = () => {
     rowMoreMenu.hidden = true;
   }
 
+  // 行のメニューボタンのイベントリスナーを設定
   const rowMenuButtons = document.querySelectorAll('.rowMenuButton');
   rowMenuButtons.forEach(button => {
     button.addEventListener('click', e => {
@@ -132,18 +144,20 @@ const setTheme = () => {
     });
   });
 
+  // パッケージ情報モーダルのクローズボタンのイベントリスナーを設定
   const packageInfoModal = document.getElementById('packageInfoModal');
   const packageInfoModalClose = document.getElementById('packageInfoModalClose');
   packageInfoModalClose.addEventListener('click', () => {
     packageInfoModal.hidden = true;
   });
 
-  // Fluent dialogs use nested shadow-rooted elements, so we need to use JS to style them
+  // Fluentダイアログのスタイルを設定
   const modalControl = packageInfoModal.shadowRoot.querySelector('.control');
   modalControl.style.maxHeight = "90%";
   modalControl.style.transition = 'height 0.2s ease-in-out';
   modalControl.style.overflowY = 'hidden';
 
+  // パッケージ情報の各要素を取得
   const packageInfoName = document.getElementById('packageInfoName');
   const packageInfoId = document.getElementById('packageInfoId');
   const packageInfoVersion = document.getElementById('packageInfoVersion');
@@ -153,11 +167,13 @@ const setTheme = () => {
   const packageInfoKeywords = document.getElementById('packageInfoKeywords');
   const packageInfoLicense = document.getElementById('packageInfoLicense');
 
+  // VCCリポジトリ追加ボタンのイベントリスナーを設定
   const rowAddToVccButtons = document.querySelectorAll('.rowAddToVccButton');
   rowAddToVccButtons.forEach((button) => {
     button.addEventListener('click', () => window.location.assign(`vcc://vpm/addRepo?url=${encodeURIComponent(LISTING_URL)}`));
   });
 
+  // パッケージ情報ボタンのイベントリスナーを設定
   const rowPackageInfoButton = document.querySelectorAll('.rowPackageInfoButton');
   rowPackageInfoButton.forEach((button) => {
     button.addEventListener('click', e => {
@@ -213,6 +229,7 @@ const setTheme = () => {
     });
   });
 
+  // パッケージ情報のURLフィールドのコピー機能を設定
   const packageInfoVccUrlFieldCopy = document.getElementById('packageInfoVccUrlFieldCopy');
   packageInfoVccUrlFieldCopy.addEventListener('click', () => {
     const vccUrlField = document.getElementById('packageInfoVccUrlField');
@@ -224,6 +241,7 @@ const setTheme = () => {
     }, 1000);
   });
 
+  // パッケージ情報のヘルプボタンのイベントリスナーを設定
   const packageInfoListingHelp = document.getElementById('packageInfoListingHelp');
   packageInfoListingHelp.addEventListener('click', () => {
     addListingToVccHelp.hidden = false;
