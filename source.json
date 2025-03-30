@@ -14,14 +14,7 @@
     },
     "bannerUrl":"banner.png",
     "githubRepos":[
-        
+        "YozoraKurage/YozoLab-VPMRepos"
     ],
-    "packages":[
-        {
-            "name":"net.yozolab.YozoLab-VPMRepos",
-            "releases":[
-                "https://github.com/YozoraKurage/YozoLab-VPMRepos/releases/download/0.0.1/net.yozolab.sceneutils-0.0.1.zip"
-            ]
-        }
-    ]
+    "packages": []
 }
